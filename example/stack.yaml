@@ -1,0 +1,26 @@
+resolver: ghcjs-0.2.0.20160414_ghc-7.10.3
+compiler: ghcjs-0.2.0.20160414_ghc-7.10.3
+compiler-check: match-exact
+flags:
+  ghcjs-react:
+    development: true
+setup-info:
+  ghcjs:
+    source:
+      ghcjs-0.2.0.20160414_ghc-7.10.3:
+        url: https://s3.amazonaws.com/ghcjs/ghcjs-0.2.0.20160414_ghc-7.10.3.tar.gz
+        sha1: 6d6f307503be9e94e0c96ef1308c7cf224d06be3
+packages:
+  - '..'
+  - '.'
+  - location:
+      git: git@github.com:iand675/ghcjs-react.git
+      commit: 3eb02ded42838fd14c56cecebf592ffc63a3e7c9
+    extra-dep: true
+extra-deps:
+#   - Cabal-1.24.0.0
+  - ghcjs-dom-0.2.3.1
+  - monad-control-1.0.1.0
+  - transformers-base-0.4.4
+  - transformers-compat-0.5.1.4
+

@@ -22,11 +22,9 @@ newtype Route = Route { unRoute :: ReactElement }
 
 newtype Params p = Params { unParams :: p }
 
-foreign import javascript unsafe "console.log($1)" js_consoleLog :: JSVal -> IO ()
 instance FromJSVal p => FromJSVal (Params p) where
   fromJSVal jv = runMaybeT $ do
     let obj = OI.Object jv
-    lift $ js_consoleLog jv
     pjv <- lift (getProp "params" obj)
     Params <$> MaybeT (fromJSVal pjv)
 instance ToJSVal p => ToJSVal (Params p) where

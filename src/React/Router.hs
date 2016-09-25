@@ -10,15 +10,15 @@ import GHCJS.Types (JSVal)
 import JavaScript.Object (getProp, setProp)
 import qualified JavaScript.Object.Internal as OI
 import React
-  ( Props(Props), PropName(PropName), OnlyAttributes, (.:)
-  , ReactM, getProps
-  , ReactClass(ReactClass), ReactElement
+  ( ReactProps(ReactProps), PropName(PropName), OnlyAttributes, (.:)
+  , ReactM, getProps, key
+  , ReactClass(ReactClass), ReactNode
   , Factory, createFactory, runFactory
   )
 
 newtype RouterHistory = RouterHistory { unRouterHistory :: JSVal }
 
-newtype Route = Route { unRoute :: ReactElement }
+newtype Route = Route { unRoute :: ReactNode }
 
 newtype Params p = Params { unParams :: p }
 
@@ -46,7 +46,7 @@ foreign import javascript unsafe "ReactRouter.createMemoryHistory" createMemoryH
 routerFactory :: Factory OnlyAttributes
 routerFactory = createFactory js_Router
 
-router :: RouterHistory -> Route -> ReactElement
+router :: RouterHistory -> Route -> ReactNode
 router history rootRoute =
   runFactory routerFactory props [unRoute rootRoute]
   where
@@ -56,16 +56,16 @@ router history rootRoute =
 routeFactory :: Factory OnlyAttributes
 routeFactory = createFactory js_Route
 
-route :: (Foldable t, Functor t) => JSString -> ReactElement -> t Route -> Route
+route :: (Foldable t, Functor t) => JSString -> ReactNode -> t Route -> Route
 route path comp children = Route $ runFactory routeFactory props (unRoute <$> children)
   where
-    props = [PropName "path" .: path, PropName "component" .: comp]
+    props = [key .: path, PropName "path" .: path, PropName "component" .: comp]
 
 {-# NOINLINE indexRouteFactory #-}
 indexRouteFactory :: Factory OnlyAttributes
 indexRouteFactory = createFactory js_IndexRoute
 
-indexRoute :: (Foldable t, Functor t) => ReactElement -> t Route -> Route
+indexRoute :: (Foldable t, Functor t) => ReactNode -> t Route -> Route
 indexRoute comp children = Route $ runFactory indexRouteFactory props (unRoute <$> children)
   where
     props = [PropName "component" .: comp]
@@ -74,7 +74,7 @@ indexRoute comp children = Route $ runFactory indexRouteFactory props (unRoute <
 linkFactory :: Factory OnlyAttributes
 linkFactory = createFactory js_Link
 
-link :: Foldable t => JSString -> t ReactElement -> ReactElement
+link :: Foldable t => JSString -> t ReactNode -> ReactNode
 link to els = runFactory linkFactory props els
   where
     props = [PropName "to" .: to]

@@ -6,7 +6,7 @@ import Control.Monad.Trans.Maybe (MaybeT(MaybeT, runMaybeT))
 import Data.Coerce (coerce)
 import Data.JSString (JSString)
 import GHCJS.Marshal (FromJSVal(fromJSVal), ToJSVal(toJSVal))
-import GHCJS.Types (JSVal)
+import GHCJS.Types (JSVal, jsval)
 import JavaScript.Object (getProp, setProp)
 import qualified JavaScript.Object.Internal as OI
 import React
@@ -56,10 +56,10 @@ router history rootRoute =
 routeFactory :: Factory OnlyAttributes
 routeFactory = createFactory js_Route
 
-route :: (Foldable t, Functor t) => JSString -> ReactNode -> t Route -> Route
+route :: (Foldable t, Functor t) => JSString -> ReactClass ps -> t Route -> Route
 route path comp children = Route $ runFactory routeFactory props (unRoute <$> children)
   where
-    props = [key .: path, PropName "path" .: path, PropName "component" .: comp]
+    props = [key .: path, PropName "path" .: path, PropName "component" .: jsval comp]
 
 {-# NOINLINE indexRouteFactory #-}
 indexRouteFactory :: Factory OnlyAttributes

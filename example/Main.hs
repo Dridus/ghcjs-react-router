@@ -90,10 +90,10 @@ React.makeClass "message" [| messageSpec |]
 
 router :: ReactNode
 router =
-  Router.router Router.hashHistory $ Router.route "/" (coerce app)
-    [ Router.route "about" (coerce about) []
-    , Router.route "inbox" (coerce inbox)
-      [ Router.route "messages/:id" (coerce message) []
+  Router.router Router.hashHistory $ Router.route "/" app
+    [ Router.route "about" about []
+    , Router.route "inbox" inbox
+      [ Router.route "messages/:id" message []
       ]
     ]
 

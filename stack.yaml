@@ -4,7 +4,7 @@ packages:
   - '.'
   - location:
       git: git@github.com:Dridus/ghcjs-react.git
-      commit: 296c1aa95822c9b5608cb74199929084d4802ca6
+      commit: be1786c5b28de8693e48d1f86858f3863bc7980c
     extra-dep: true
 extra-deps:
   - ghcjs-dom-0.2.3.1
